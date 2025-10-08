@@ -1,16 +1,1 @@
-{
-  "hosting": {
-    "public": "public",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ]
-  }
-}
+{"hosting":{"public":"public","ignore":["firebase.json","**/.*","**/node_modules/**"],"rewrites":[{"source":"**","destination":"/index.html"}]},"flutter":{"platforms":{"android":{"default":{"projectId":"instagramclone-f0cd1","appId":"1:784992969089:android:0cc5ed150ce31fa1fc0880","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"instagramclone-f0cd1","configurations":{"android":"1:784992969089:android:0cc5ed150ce31fa1fc0880","ios":"1:784992969089:ios:eba89403104f05d0fc0880","macos":"1:784992969089:ios:eba89403104f05d0fc0880","web":"1:784992969089:web:e8eb22a58127f2d0fc0880","windows":"1:784992969089:web:7e6980cf0c7582e8fc0880"}}}}}}
