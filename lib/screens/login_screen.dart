@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram_clone/resources/auth_methods.dart';
+import 'package:instagram_clone/responsive/mobile_screen_layout.dart';
+import 'package:instagram_clone/responsive/responsive_layout_screen.dart';
+import 'package:instagram_clone/responsive/web_screen_layout.dart';
+import 'package:instagram_clone/screens/signup_screen.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/utils/utils.dart';
 import 'package:instagram_clone/widgets/text_field_input.dart';
@@ -34,7 +38,14 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     if (res == "success") {
-      // navigate to the home screen
+      Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context)=> const ResponsiveLayout(
+          webScreenLayout: WebScreenLayout(),
+          mobileScreenLayout: MobileScreenLayout(),
+          ),
+        ),
+      );
     } else {
       // show the error
       showSnackBar(res, context);
@@ -42,6 +53,10 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isLoading = false;
     });
+  }
+
+  void navigateToSignUp(){
+    Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const SignUpScreen()));
   }
 
   @override
@@ -82,15 +97,19 @@ class _LoginScreenState extends State<LoginScreen> {
               InkWell(
                 onTap: loginUser,
                 child: Container(
-                  child:_isLoading ? const Center(child: CircularProgressIndicator(
-                    color: Color.fromARGB(255, 0, 0, 0),
-                  ),) : const Text(
-                    'Login',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w900,
-                    ),
-                  ),
+                  child: _isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                            color: Color.fromARGB(255, 0, 0, 0),
+                          ),
+                        )
+                      : const Text(
+                          'Login',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
                   width: double.infinity,
                   alignment: Alignment.center,
                   padding: const EdgeInsets.symmetric(vertical: 12),
@@ -108,20 +127,17 @@ class _LoginScreenState extends State<LoginScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      child: Text("Don't have account mtf ? "),
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                    ),
-                  ),
                   Container(
-                    child: Text(
-                      " Wanna sign up mtf ?",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
+                    child: Text("Don't have account mtf ?"),
                     padding: const EdgeInsets.symmetric(vertical: 8),
                   ),
+                  GestureDetector(
+                    onTap: navigateToSignUp,
+                    child: Container(
+                      child: Text("Wanna sign up mtf.",style: TextStyle(fontWeight: FontWeight.bold)),
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                    ),
+                  ),                
                 ],
               ),
             ],
