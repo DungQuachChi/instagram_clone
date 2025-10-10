@@ -28,7 +28,7 @@ class FirestoreMethods {
       Post post = Post(
         username: username,
         uid: uid,
-        discription: description,
+        description: description,
         postId: postId,
         datePublished: DateTime.now(),
         postUrl: photoUrl,
