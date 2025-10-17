@@ -8,6 +8,7 @@ import 'package:instagram_clone/responsive/responsive_layout_screen.dart';
 import 'package:instagram_clone/responsive/web_screen_layout.dart';
 import 'package:instagram_clone/screens/login_screen.dart';
 import 'package:instagram_clone/screens/signup_screen.dart';
+import 'package:instagram_clone/services/notifications_screen.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:provider/provider.dart';
 
@@ -25,6 +26,7 @@ void main() async {
     );
   } else {
     await Firebase.initializeApp();
+    await NotificationService().initialize();
   }
   runApp(const MyApp());
 }
