@@ -62,20 +62,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (res != 'success') {
       showSnackBar(res, context);
     } else {
-      Navigator.of(context).pushReplacement(
+      Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-          builder: (context)=> const ResponsiveLayout(
-                webScreenLayout: WebScreenLayout(),
-                mobileScreenLayout: MobileScreenLayout(),
+          builder: (context) => const ResponsiveLayout(
+            webScreenLayout: WebScreenLayout(),
+            mobileScreenLayout: MobileScreenLayout(),
           ),
         ),
+        (route) => false, 
       );
-
     }
   }
 
-  void navigateToLogin(){
-    Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const LoginScreen()));
+  void navigateToLogin() {
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute(builder: (context) => const LoginScreen()));
   }
 
   @override
@@ -158,15 +160,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
               InkWell(
                 onTap: signUpUser,
                 child: Container(
-                  child: _isLoading ? const Center(
-                    child: CircularProgressIndicator(
-                      color: Color.fromARGB(255, 0, 0, 0),
-                      ),
-                    ) 
-                  : const Text('Sign up',style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black
-                  ),),
+                  child: _isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                            color: Color.fromARGB(255, 0, 0, 0),
+                          ),
+                        )
+                      : const Text(
+                          'Sign up',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
 
                   width: double.infinity,
                   alignment: Alignment.center,
@@ -192,7 +198,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   GestureDetector(
                     onTap: navigateToLogin,
                     child: Container(
-                      child: Text("Login.",style: TextStyle(fontWeight: FontWeight.bold),),
+                      child: Text(
+                        "Login.",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                       padding: const EdgeInsets.symmetric(vertical: 8),
                     ),
                   ),

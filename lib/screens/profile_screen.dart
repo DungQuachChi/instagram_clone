@@ -1,12 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/providers/user_provider.dart';
 import 'package:instagram_clone/resources/auth_methods.dart';
 import 'package:instagram_clone/resources/firestore_methods.dart';
 import 'package:instagram_clone/screens/login_screen.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/utils/utils.dart';
 import 'package:instagram_clone/widgets/follow_button.dart';
+import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String uid;
@@ -105,27 +107,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    FirebaseAuth.instance.currentUser!.uid ==
-                                            widget.uid
-                                        ? FollowButton(
-                                            backgroundColor:
-                                                mobileBackgroundColor,
-                                            borderColor: Colors.white,
-                                            text: 'Sign Out',
-                                            textColor: Colors.grey,
-                                            function: () async {
-                                              await AuthMethods().signOut();
-                                              Navigator.of(
-                                                context,
-                                              ).pushReplacement(
+                                FirebaseAuth.instance.currentUser!.uid == widget.uid
+                                    ? FollowButton(
+                                        backgroundColor: mobileBackgroundColor,
+                                        borderColor: Colors.white,
+                                        text: 'Sign Out',
+                                        textColor: Colors.grey,
+                                        function: () async {
+                                          try {
+                                            // Clear user from provider
+                                            Provider.of<UserProvider>(context, listen: false).clearUser();
+                                            
+                                            // Sign out from Firebase
+                                            await AuthMethods().signOut();
+                                            
+                                            // Navigate to login screen and remove all previous routes
+                                            if (mounted) {
+                                              Navigator.of(context).pushAndRemoveUntil(
                                                 MaterialPageRoute(
-                                                  builder: (context) =>
-                                                    const  LoginScreen(),
+                                                  builder: (context) => const LoginScreen(),
                                                 ),
+                                                (route) => false, // Remove all previous routes
                                               );
-                                            },
-                                          )
-                                        : isFollowing
+                                            }
+                                          } catch (e) {
+                                            if (mounted) {
+                                              showSnackBar(e.toString(), context);
+                                            }
+                                          }
+                                        },
+                                      ) : isFollowing
                                         ? FollowButton(
                                             backgroundColor: Colors.white,
                                             borderColor: Colors.black,

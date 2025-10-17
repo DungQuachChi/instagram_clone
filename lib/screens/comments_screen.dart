@@ -26,8 +26,11 @@ class _CommentsScreenState extends State<CommentsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final User user = Provider.of<UserProvider>(context).getUser;
-
+    final User? user = Provider.of<UserProvider>(context).getUser;
+  
+  if (user == null) {
+    return const Center(child: CircularProgressIndicator());
+  }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: mobileBackgroundColor,

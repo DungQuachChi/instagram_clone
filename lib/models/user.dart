@@ -29,16 +29,22 @@ class User {
     'following': following,
   };
 
-  static User fromSnap(DocumentSnapshot snap) {
-    var snapshot = snap.data() as Map<String, dynamic>;
-    return User(
-      username: snapshot['username'],
-      uid: snapshot['uid'],
-      email: snapshot['email'],
-      bio: snapshot['bio'],
-      photoUrl: snapshot['photoUrl'],
-      followers: snapshot['followers'],
-      following: snapshot['following'],
-    );
+static User fromSnap(DocumentSnapshot snap) {
+  // Check if document exists and has data
+  if (!snap.exists || snap.data() == null) {
+    throw Exception('User document does not exist');
   }
+  
+  var snapshot = snap.data() as Map<String, dynamic>;
+  
+  return User(
+    username: snapshot['username'] ?? '',
+    uid: snapshot['uid'] ?? '',
+    email: snapshot['email'] ?? '',
+    bio: snapshot['bio'] ?? '',
+    photoUrl: snapshot['photoUrl'] ?? '',
+    followers: snapshot['followers'] ?? [],
+    following: snapshot['following'] ?? [],
+  );
+}
 }

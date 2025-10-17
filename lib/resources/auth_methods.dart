@@ -10,15 +10,27 @@ class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<model.User> getUserDetails() async {
-    User currentUser = _auth.currentUser!;
+Future<model.User> getUserDetails() async {
+  User currentUser = _auth.currentUser!;
 
+  for (int i = 0; i < 3; i++) {
     DocumentSnapshot snap = await _firestore
         .collection('users')
         .doc(currentUser.uid)
         .get();
-    return model.User.fromSnap(snap);
+    
+    if (snap.exists && snap.data() != null) {
+      return model.User.fromSnap(snap);
+    }
+    
+    // Wait before retrying (increasing delay)
+    if (i < 2) {
+      await Future.delayed(Duration(milliseconds: 500 * (i + 1)));
+    }
   }
+  
+  throw Exception('User document not found in Firestore after multiple attempts');
+}
 
   Future<String> signUpUser({
     required String email,
@@ -92,4 +104,5 @@ class AuthMethods {
   Future<void> signOut() async {
     await _auth.signOut();
   }
+  
 }

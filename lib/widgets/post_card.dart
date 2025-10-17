@@ -31,31 +31,38 @@ class _PostCardState extends State<PostCard> {
   }
 
   void getComments() async {
-    try {
-      QuerySnapshot snap = await FirebaseFirestore.instance
-          .collection('posts')
-          .doc(widget.snap['postId'])
-          .collection('comments')
-          .get();
+  try {
+    QuerySnapshot snap = await FirebaseFirestore.instance
+        .collection('posts')
+        .doc(widget.snap['postId'])
+        .collection('comments')
+        .get();
 
-      
-      commentLen = snap.docs.length;
-
-      print(snap.docs.length);
-    } catch (e) {
-      showSnackBar(e.toString(), context);
-    }
+    // Check if widget is still mounted before updating state
+    if (!mounted) return;
+    
     setState(() {
-      
+      commentLen = snap.docs.length;
     });
+
+    print(snap.docs.length);
+  } catch (e) {
+    // Check if widget is still mounted before showing snackbar
+    if (!mounted) return;
+    showSnackBar(e.toString(), context);
   }
+}
 
   @override
   Widget build(BuildContext context) {
-    final User user = Provider.of<UserProvider>(context).getUser;
+    final User? user = Provider.of<UserProvider>(context).getUser;
     final width = MediaQuery.of(context).size.width;
 
-    return Container(
+  if (user == null) {
+    return const Center(child: CircularProgressIndicator());
+  }
+
+  return Container(
       decoration: BoxDecoration(
         border: Border.all(
           color: width > webScreenSize ? secondaryColor : mobileBackgroundColor,
