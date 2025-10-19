@@ -39,13 +39,14 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     if (res == "success") {
-      Navigator.of(context).pushReplacement(
+      Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
         builder: (context)=> const ResponsiveLayout(
           webScreenLayout: WebScreenLayout(),
           mobileScreenLayout: MobileScreenLayout(),
           ),
         ),
+        (route) => false,
       );
     } else {
       // show the error
@@ -57,7 +58,11 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void navigateToSignUp(){
-    Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const SignUpScreen()));
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => const SignUpScreen(),
+      ),
+    );
   }
 
   @override

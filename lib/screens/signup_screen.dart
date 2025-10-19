@@ -75,9 +75,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   void navigateToLogin() {
-    Navigator.of(
-      context,
-    ).push(MaterialPageRoute(builder: (context) => const LoginScreen()));
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => const LoginScreen(),
+      ),
+    );
   }
 
   @override
