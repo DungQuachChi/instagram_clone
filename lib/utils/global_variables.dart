@@ -8,7 +8,7 @@ import 'package:instagram_clone/screens/search_screen.dart';
 
 const webScreenSize = 600;
 
-List<Widget> homeScreenItems = [
+List<Widget> get homeScreenItems => [
   FeedScreen(),
   SearchScreen(),
   AddPostScreen(),
