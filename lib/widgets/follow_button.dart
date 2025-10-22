@@ -6,33 +6,44 @@ class FollowButton extends StatelessWidget {
   final Color borderColor;
   final String text;
   final Color textColor;
-  const FollowButton({super.key,this.function, required this.backgroundColor, required this.borderColor, required this.text, required this.textColor});
+  final double height;
+  final EdgeInsetsGeometry margin;
+  
+  const FollowButton({
+    super.key,
+    this.function,
+    required this.backgroundColor,
+    required this.borderColor,
+    required this.text,
+    required this.textColor,
+    this.height = 36,
+    this.margin = const EdgeInsets.only(top: 12),
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(top: 28),
-      child: TextButton(
-        onPressed: function, 
-        child: Container(
-          width: 250,
-          height: 27,
-          decoration: BoxDecoration(
-            color: backgroundColor,
-            borderRadius: BorderRadius.circular(6),
-            border: Border.all(
-              color: borderColor,
+      margin: margin,      
+      child: SizedBox(
+        height: height,
+        width: double.infinity,
+        child: TextButton(
+          onPressed: function,
+          style: TextButton.styleFrom(
+            padding: EdgeInsets.zero,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(6),
+              side: BorderSide(color: borderColor),
+            ),
+            backgroundColor: backgroundColor,
+          ),
+          child: Text(
+            text,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: textColor,
             ),
           ),
-          alignment: Alignment.center,
-            child: Text(
-              text,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color:textColor,
-              ),
-            ),
-          
         ),
       ),
     );
