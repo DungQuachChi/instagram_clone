@@ -99,7 +99,7 @@ exports.onNewLike = onDocumentUpdated("posts/{postId}", async (event) => {
   }
 });
 
-// Update like count 
+// Update like count
 exports.updateLikeCount = onDocumentUpdated(
     "posts/{postId}",
     async (event) => {
