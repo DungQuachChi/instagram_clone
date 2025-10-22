@@ -67,7 +67,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     try {
       String photoUrl = widget.user.photoUrl;
 
-      // Upload new image if selected
       if (_image != null) {
         photoUrl = await StorageMethods().uploadImageToStorage(
           'profilePics',
@@ -76,7 +75,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         );
       }
 
-      // Update user document
       await FirebaseFirestore.instance
           .collection('users')
           .doc(widget.user.uid)
@@ -91,7 +89,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       });
 
       showSnackBar('Profile updated successfully', context);
-      Navigator.of(context).pop();
+
+      // IMPORTANT: return true so caller knows to refresh
+      Navigator.of(context).pop(true);
     } catch (e) {
       setState(() {
         _isLoading = false;
@@ -134,7 +134,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       icon: const Icon(Icons.edit),
                       style: IconButton.styleFrom(
                         backgroundColor: primaryColor,
-                        foregroundColor: Colors.white,
+                        foregroundColor: const Color.fromARGB(255, 116, 104, 104),
                       ),
                     ),
                   ),
@@ -185,7 +185,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(4)),
                     ),
-                    color: _isLoading ? Colors.grey : primaryColor,
+                    color: _isLoading ? Colors.grey : const Color.fromARGB(255, 126, 109, 109),
                   ),
                   child: _isLoading
                       ? const CircularProgressIndicator(color: Colors.white)
